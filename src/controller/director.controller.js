@@ -1,4 +1,4 @@
-const { query, add, remove } = require('../service/director.service')
+const { query, add, remove,update } = require('../service/director.service')
 
 class DirectorController {
   async queryDirector(ctx, next) {
@@ -22,13 +22,23 @@ class DirectorController {
     ctx.body = {
       code: 0,
       success: true,
-      result
+      result,
     }
   }
 
   async removeDirector(ctx, next) {
     const { dir_id } = ctx.request.body
     const res = await remove({ dir_id })
+    ctx.body = {
+      code: 0,
+      success: true,
+      result: res
+    }
+  }
+
+  async updateDirector(ctx,next){
+    const {dir_id,...uptObj} = ctx.request.body
+    const res = await update(uptObj,dir_id)
     ctx.body = {
       code: 0,
       success: true,

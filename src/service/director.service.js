@@ -1,4 +1,5 @@
 const Director = require('../model/director.model')
+const Film = require('../model/film.model')
 const { Op } = require('sequelize')
 
 class DirectorService {
@@ -6,6 +7,7 @@ class DirectorService {
     return await Director.findAndCountAll({
       offset: 0,
       limit: 10,
+      attributes: ['dir_id', 'dir_name', 'gender'],
       where: { dir_name }
     })
   }
@@ -34,12 +36,16 @@ class DirectorService {
         }
       })
       if (destroyRes > 0) {
-        return findRes
+        return destroyRes
       }
       else {
         return { err: '删除操作失败' }
       }
     }
+  }
+
+  async update(uptObj, dir_id) {
+    return await Director.update(uptObj, { where: { dir_id } })
   }
 }
 
