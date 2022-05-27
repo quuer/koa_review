@@ -7,8 +7,13 @@ class DirectorService {
     return await Director.findAndCountAll({
       offset: 0,
       limit: 10,
+      where: { dir_name },
       attributes: ['dir_id', 'dir_name', 'gender'],
-      where: { dir_name }
+      include: {
+        model: Film,
+        as: 'film_info',
+        attributes: ['dir_id', 'film_name', 'film_id']
+      }
     })
   }
 

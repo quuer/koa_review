@@ -1,5 +1,6 @@
 const sequelize = require('../db/sequelize')
 const { DataTypes } = require('sequelize')
+const Film = require('./film.model')
 
 const Director = sequelize.define('review_director', {
     // 在这里定义模型属性, allowNull 不填默认为 true
@@ -27,5 +28,16 @@ const Director = sequelize.define('review_director', {
 
 // ONCE：强制创建表
 // Director.sync({ force: true })
+
+// 关联查询
+Director.belongsTo(Film, {
+    as: 'film_info',
+    foreignKey: {
+      name: 'dir_id',
+      type: DataTypes.UUIDV4
+    },
+    targetKey: 'dir_id'
+  }
+)
 
 module.exports = Director
