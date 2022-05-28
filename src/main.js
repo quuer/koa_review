@@ -1,11 +1,18 @@
 const Koa = require('koa')
 const app = new Koa()
 const errorHandler = require('./error/errorHandler')
-const router = require('./router/index')
+const koaStatic = require('koa-static')
 const koaBody = require('koa-body')
+const router = require('./router/index')
 const { APP_PORT, APP_BASE_URL } = require('./config/default.config')
+const path = require('path')
 
-app.use(koaBody())
+// 实现文件上传
+app.use(koaBody({
+    multipart: true // 支持文件上传
+  })
+)
+app.use(koaStatic(path.resolve(__dirname, '../public/upload')))
 app.use(router.routes()).use(router.allowedMethods())
 app.on('error', errorHandler)
 app.listen(APP_PORT, () => {
